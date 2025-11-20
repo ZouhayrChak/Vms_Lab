@@ -1,0 +1,15 @@
+Frontend/.dist
+Frontend/.env
+Frontend/node_modules/*
+.idea/
+.dist/
+Microservice/__pycache__
+webTerminal/__pycache__
+Backend/.dist/*
+Backend/.idea/*
+Backend/target/*
+Backend/.vscode/*
+
+
+
+

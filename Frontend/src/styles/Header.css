@@ -1,0 +1,19 @@
+#header-out{
+    height: 100%;
+    
+}
+
+#header-out button{
+    float: right;
+    height: 30%;
+    width: 150px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: rgba(182, 115, 115, 0.185);
+    cursor: pointer;
+    margin: 5px 5px 5px 5px;
+    box-shadow: 1px 1px 1px 1px;
+}
+
