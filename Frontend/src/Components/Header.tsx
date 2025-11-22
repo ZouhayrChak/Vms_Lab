@@ -37,7 +37,7 @@ const Header:React.FC = () => {
                 })
          )}, 1000);
 
-        if (time.second == 0){
+        if (time.second === 0){
             setTime(prev => ({
                     ...prev,
                     minute: prev.minute-1,
@@ -45,17 +45,20 @@ const Header:React.FC = () => {
                 }))
         }
 
-        if (time.minute == 0 && time.second == 0){
+        if (time.minute === 0 && time.second === 0){
             setTime(prev => ({
                     ...prev,
                     hour: prev.hour-1,
+                    minute: 59,
                     second: 60
                 }))
         }
-        if (time.hour == 0 && time.minute == 0 && time.second == 0){
+        if (time.hour === 0 && time.minute === 0 && time.second === 0){
             clearTimeout(secondTimeout);
             deleteAllVms();
         }
+
+        return () => clearTimeout(secondTimeout);
     },[time])
 
     

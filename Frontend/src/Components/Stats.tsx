@@ -30,8 +30,10 @@ const Stats: React.FC<StatsProps> = ({ nameVm, ipVm }) => {
       }
     };
 
-  return () => ws.close();
-}, [nameVm]);
+    return () => {
+      ws.close();
+    };
+  }, [nameVm]);
 
  
 

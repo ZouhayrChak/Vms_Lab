@@ -18,14 +18,17 @@ class Vm(Api):
         def createVm():
             vm_data = request.get_json()
             natBridge = NatBridge()
-            nb_data =dict(idNb=vm_data['idNb'],natIp=vm_data['natIp'])
+            nb_data =dict(idNb=vm_data['idNb'],natIp=vm_data['natIp'],idSb=vm_data['idSb'])
 
             natBridge.createNatBridge(nb_data)
             try:
                 subprocess.check_call(f"docker run --name={vm_data['nameVm']} --net=sbr{vm_data['idSb']} --ip={vm_data['ipVm']} --rm --privileged -d docker:dind".split())
-                subprocess.check_call(f"docker network connect nbr{vm_data['idNb']} {vm_data['nameVm']}".split())
+                subprocess.check_call(f"docker network connect nbr{vm_data['idSb']}{vm_data['idNb']} {vm_data['nameVm']}".split())
                 response = {"message":"vm created","success":True},201
-            except CalledProcessError:
+            except Exception:
+                subprocess.check_call(f"docker network rm nbr{vm_data['idSb']}{vm_data['idNb']}".
+                split())
+                subprocess.check_call(f"docker rm -f {vm_data['nameVm']}".split())
                 response = {"message":"could not create vm","success":False},404
             return response
 
@@ -38,7 +41,7 @@ class Vm(Api):
 
 
                 response = {"message":"vm deleted","success":True},200
-            except CalledProcessError:
+            except Exception:
                 print(f"vm {data['nameVm']} cannot be deleted")
                 response = {"message":"could not delete vm","success":False}
             return response,404

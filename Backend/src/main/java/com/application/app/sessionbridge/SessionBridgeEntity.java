@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Entity
 public class SessionBridgeEntity {
 
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     private int id;
 
@@ -36,11 +36,14 @@ public class SessionBridgeEntity {
     private User user;
 
 
-    @PrePersist
     public void generateValue(){
         var v = COUNTER.getAndUpdate(i -> (i+1) % 256);
         this.bridgeBit = v;
-        this.bridgeIp = "172.17." + this.bridgeBit + ".1";
+        this.bridgeIp = "172.19." + this.bridgeBit + ".1";
+    }
+
+    public String toString(){
+        return this.bridgeIp + id;
     }
 
 

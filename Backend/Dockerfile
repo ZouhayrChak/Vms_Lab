@@ -8,7 +8,7 @@ RUN chmod +x mvnw
 RUN ./mvnw dependency:go-offline -B
 
 COPY src ./src
-RUN ./mvnw clean package -DskipTests -DfinalName=app
+RUN ./mvnw clean package -DskipTests
 
 FROM eclipse-temurin:17-jre-alpine AS runtime
 
@@ -16,7 +16,7 @@ WORKDIR /app
 
 RUN apk add --no-cache ca-certificates
 
-COPY --from=build /app/target/app.jar app.jar
+COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8080
 

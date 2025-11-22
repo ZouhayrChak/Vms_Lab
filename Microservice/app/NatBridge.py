@@ -13,21 +13,14 @@ class NatBridge:
             subprocess.check_call(f"""
                     docker network create \
                     --driver=bridge --subnet={subnet}/24 \
-                    -o com.docker.network.bridge.name=nbr{nb_data['idNb']}
-                    nbr{nb_data['idNb']}
+                    nbr{nb_data['idSb']}{nb_data['idNb']}
                     """.split())
-            
-
-            response = {"message":"nat bridge created","success":True} 
-        except CalledProcessError:
-            response = {"message":"nat bridge cannot be created","success":False}
-        return response
+        except Exception:
+            raise Exception("Could not create nat bridge")
     
-    def deleteNatBridge(self,idNb:str):
+    def deleteNatBridge(self,idNb,idSb):
         try:
-            subprocess.check_call(f"docker network rm nbr{idNb}".split())
+            subprocess.check_call(f"docker network rm nbr{idSb}{idNb}".split())
             response = {"message":"nat bridge deleted","success":True}
-        except CalledProcessError:
-            print(f"bridge br{idNb} cannot be deleted")
-            response = {"message":"nat bridge not deleted","success":False}
-        return response
+        except Exception:
+            raise Exception("Could not delete nat bridge")

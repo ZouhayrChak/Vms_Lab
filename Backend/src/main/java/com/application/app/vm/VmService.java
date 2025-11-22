@@ -62,12 +62,13 @@ public class VmService {
         VmDetailsDTO vmDto = new VmDetailsDTO(vm.getId(),vm.getSb().getId(),vm.getNb().getId(), vm.getNameVm(), vm.getVmSIp(), vm.getNb().getNatIp());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity httpEntity = new HttpEntity(headers);
-        ResponseEntity<ApiResponseDTO> response = restTemplate.postForEntity(flaskUrl + "/sm", httpEntity, ApiResponseDTO.class);
+        HttpEntity<VmDetailsDTO> httpEntity = new HttpEntity<>(vmDto,headers);
+        ResponseEntity<ApiResponseDTO> response = restTemplate.postForEntity(flaskUrl + "/vm", httpEntity, ApiResponseDTO.class);
         if(response.getStatusCode().is2xxSuccessful()) {
             vmRepository.save(vm);
             return vmDto;
         }
+        System.out.println("after if is successful");
         throw new VmNotFoundException("enable to create vm");
 
     }
@@ -82,7 +83,9 @@ public class VmService {
         HttpEntity<VmDetailsDTO> httpEntity = new HttpEntity<>(vmDto,headers);
         ResponseEntity<ApiResponseDTO> response = restTemplate.exchange(flaskUrl + "/vm", HttpMethod.DELETE,httpEntity, ApiResponseDTO.class);
 
-        vmRepository.deleteById(idVm);
+        if (response.getStatusCode().is2xxSuccessful()) {
+            vmRepository.deleteById(idVm);}
+        throw new VmNotFoundException("something is wrong");
 
     }
 
@@ -96,8 +99,12 @@ public class VmService {
 
         user.setSb(null);
         userRepository.save(user);
+        ResponseEntity<ApiResponseDTO> response = restTemplate.exchange(flaskUrl + "/vm/all/{idSb}", HttpMethod.DELETE,null, ApiResponseDTO.class,sb.getId());
+        if(response.getStatusCode().is2xxSuccessful())
+            sessionBridgeRepository.delete(sb);
 
-        sessionBridgeRepository.delete(sb);
+        throw new SessionBridgeNotFoundException("not successful delete of vms");
+
     }
 
 

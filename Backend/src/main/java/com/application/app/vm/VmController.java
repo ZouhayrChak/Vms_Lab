@@ -28,6 +28,10 @@ public class VmController {
         }catch(SessionBridgeNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponseDTO("session bridge doesn't exist",false));
         }
+        catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponseDTO("something went wrong",false));
+
+        }
     }
 
     @DeleteMapping("/vm/{idVm}")
@@ -37,6 +41,8 @@ public class VmController {
             return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseDTO("vm deleted ",true));
         }catch(VmNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponseDTO("vm not found",false));
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponseDTO("something went wrong",false));
         }
     }
 
@@ -47,6 +53,8 @@ public class VmController {
             return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseDTO("vms deleted",true));
         }catch (SessionBridgeNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponseDTO("session bridge not found",false));
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponseDTO("something went wrong",false));
         }
     }
 
@@ -57,6 +65,8 @@ public class VmController {
             return ResponseEntity.status(HttpStatus.OK).body(vms);
         }catch (VmNotFoundException | SessionBridgeNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponseDTO("vms not found",false));
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponseDTO("something went wrong",false));
         }
     }
 

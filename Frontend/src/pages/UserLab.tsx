@@ -24,14 +24,12 @@ const UserLab: React.FC = () => {
     useEffect(()=>{
         
         const getSessionBridge = async () =>{
-            if (!localStorage.getItem("idSb")){
                 try{
                     const response = await createSessionBridge();
                     localStorage.setItem("idSb",response.idSb.toString());
                 }catch(error:any){
                     toast.warning(error.message);
                 }
-            }
         
     }
     

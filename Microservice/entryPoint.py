@@ -7,7 +7,7 @@ import os
 
 app = Flask(__name__)
 backend = f"{os.getenv('BACKEND_IP','http://127.0.0.1:8080')}"
-CORS(app, allowed_origins=[backend,"http://localhost:8080"])
+CORS(app)
 
 sessionBridge = SessionBridge(app)
 vm = Vm(app)

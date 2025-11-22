@@ -3,7 +3,6 @@ package com.application.app.sessionbridge;
 
 import com.application.app.dto.users.ApiResponseDTO;
 import com.application.app.dto.users.SessionBridgeDTO;
-import com.application.app.dto.users.VmDetailsDTO;
 import com.application.app.exception.SessionBridgeAlreadyCreatedException;
 import com.application.app.exception.SessionBridgeNotFoundException;
 import com.application.app.user.User;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Map;
 
 
 @Service
@@ -49,28 +47,28 @@ public class SessionBridgeService {
 
     public SessionBridgeDTO createSessionBridge() throws SessionBridgeAlreadyCreatedException {
         User user = getCurrentUser();
-        try {
-            if (user.getSb() == null) {
-                SessionBridgeEntity sb = new SessionBridgeEntity();
-                sb.setUser(user);
-                user.setSb(sb);
-                SessionBridgeDTO sbDto = new SessionBridgeDTO(sb.getId(), sb.getBridgeIp());
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_JSON);
-                HttpEntity<SessionBridgeDTO> httpEntity = new HttpEntity<>(sbDto,headers);
-                ResponseEntity<ApiResponseDTO> response = restTemplate.postForEntity(flaskUrl + "/sb", httpEntity, ApiResponseDTO.class);
-                if(response.getStatusCode().is2xxSuccessful()) {
-                    sessionBridgeRepository.save(sb);
-                    return sbDto;
-                }
-                throw new SessionBridgeAlreadyCreatedException("session bridge already created");
-
-            } else {
-                throw new SessionBridgeAlreadyCreatedException("Session bridge already created");
+        
+        if (user.getSb() == null) {
+            SessionBridgeEntity sb = new SessionBridgeEntity();
+            sb.setUser(user);
+            user.setSb(sb);
+            sb.generateValue();
+            System.out.println(sb.getId());
+            SessionBridgeDTO sbDto = new SessionBridgeDTO(sb.getId()+1, sb.getBridgeIp());
+            System.out.println(sb.getId());
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<SessionBridgeDTO> httpEntity = new HttpEntity<>(sbDto,headers);
+            ResponseEntity<ApiResponseDTO> response = restTemplate.postForEntity(flaskUrl + "/sb", httpEntity, ApiResponseDTO.class);
+            if(response.getStatusCode().is2xxSuccessful()) {
+                sessionBridgeRepository.save(sb);
+                System.out.println(sb.getId());
+                return sbDto;
             }
-        } catch (DataIntegrityViolationException exp) {
+            throw new SessionBridgeAlreadyCreatedException("session bridge already created");
 
-            throw new SessionBridgeAlreadyCreatedException("Session bridge already created (DB constraint)");
+        } else {
+            throw new SessionBridgeAlreadyCreatedException("Session bridge already created");
         }
     }
 

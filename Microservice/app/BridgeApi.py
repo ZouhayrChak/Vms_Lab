@@ -23,11 +23,11 @@ class SessionBridge(Api):
                 subprocess.check_call(f"""
                     docker network create \
                     --driver=bridge --subnet={subnet}/24 \
-                    -o 'com.docker.network.bridge.name'='sbr{sb_data['idSb']}'
                     sbr{sb_data['idSb']} """.split())
 
                 response = {"message":"session bridge created","success":True},201 
-            except CalledProcessError:
+            except Exception:
+                subprocess.check_call(f"docker network rm sbr{sb_data['idSb']} ".split())
                 response = {"message":"session bridge cannot be created","success":False},404
                 
             return response
@@ -38,7 +38,7 @@ class SessionBridge(Api):
             try:
                 subprocess.check_call(f"docker network rm sbr{idSb}".split())
                 response = {"message":"session bridge deleted","success":True},200
-            except CalledProcessError:
+            except Exception:
                 print(f"bridge sbr{idSb} cannot be deleted")
                 response = {"message":"session bridge not deleted","success":False},404
             return response

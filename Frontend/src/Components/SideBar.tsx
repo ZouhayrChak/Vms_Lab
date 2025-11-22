@@ -10,7 +10,7 @@ import type { Dispatch, SetStateAction} from "react";
 
 interface SideBarProps {
     selectedVm: DetailVm;
-    setSelectedVm: Dispatch<SetStateAction<DetailVm | undefined>>;}
+    setSelectedVm: Dispatch<SetStateAction<DetailVm>>;}
 
 
 const SideBar: React.FC<SideBarProps> = (props) => {
@@ -38,7 +38,7 @@ const SideBar: React.FC<SideBarProps> = (props) => {
                     setVms(newList);
                     // set selected to first or undefined if none
                     if (newList.length >= 1 ){
-                        props.setSelectedVm(newList.at(0));
+                        props.setSelectedVm(newList[0]);
                     }
                     else{
                     props.setSelectedVm({

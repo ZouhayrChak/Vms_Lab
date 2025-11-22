@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @AllArgsConstructor
 public class VmEntity {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     private int id;
 
@@ -41,8 +41,8 @@ public class VmEntity {
         int v = COUNTER.getAndUpdate(i -> (i+1) % 256);
         this.ipBit = v;
         if(sb != null && nb != null) {
-            this.vmSIp = "172.17." + sb.getBridgeBit() + "." + ipBit;
-            this.vmNIp = "172.18." + nb.getNatBit() + "." + ipBit;
+            this.vmSIp = "172.19." + sb.getBridgeBit() + "." + ipBit;
+            this.vmNIp = "171.1." + nb.getNatBit() + "." + ipBit;
             this.nameVm = "node" + vmSIp;
         }
     }
