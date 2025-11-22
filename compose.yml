@@ -42,6 +42,8 @@ services:
       - mynet
     depends_on:
       - backend
+    extra_hosts:
+      - "terminal:terminal_ip"
     ports:
       - "80:80"
     volumes:
