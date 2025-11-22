@@ -30,5 +30,5 @@ logging:
         security: DEBUG
 
 flask:
-  url: "http://flask:8000/api"
+  url: "http://127.0.0.1:8000/api"
 
