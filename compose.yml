@@ -19,7 +19,7 @@ services:
     build:
       context: ./Backend
     extra-hosts:
-      - "host.docker.internal:host-gateway"
+      - "flask:microservice_ip"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/lab
       SPRING_DATASOURCE_USERNAME: admin
@@ -27,7 +27,7 @@ services:
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
       SPRING_JPA_HIBERNATE_DDL_AUTO: create-drop
       SPRING_JPA_SHOW_SQL: "true"
-      FLASK_URL: "http://host.docker.internal:8000"
+      FLASK_URL: "http://flask:8000/api"
     networks:
       - mynet
     depends_on:
@@ -40,11 +40,8 @@ services:
       context: ./Frontend
     networks:
       - mynet
-    extra-hosts:
-      - "host.docker.internal:host-gateway"
-    environment:
-      VITE_API: http://backend:8080
-      VITE_SOCKET: "http://host.docker.internal:5000"
+    depends_on:
+      - backend
     ports:
       - "80:80"
     volumes:
