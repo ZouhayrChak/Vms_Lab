@@ -1,11 +1,27 @@
 run_backend:
-  image: docker:dind
+  image: eclipse-temurin:17-jdk
   before_script:
     - cd Backend/
-    - docker build -t backend-image .
+    - apt update && apt install -y curl
   script:
-    - docker run -d -p 8000:8000 --name backend-container backend-image
+    - ./mvnw clean package -DskipTests
+    - java -jar target/backend-0.0.1-SNAPSHOT.jar &
   after_script:
-    - docker stop backend-container
-    - docker rm backend-container 
+    - curl -X POST http://localhost:8080/api/auth/user
+
+
+run_frontend:
+  image: node:16
+  before_script:
+    - cd Frontend/
+  script:
+    - npm install
+    - npm run build
+    - npm install -g serve
+    - serve -s build -l 5000 &
+  after_script:
+    - curl -X GET http://localhost:5000
+
+
+
 
