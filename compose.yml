@@ -18,6 +18,7 @@ services:
   backend:
     build:
       context: ./Backend
+    image: zouhayrchak/backend:latest
     extra-hosts:
       - "flask:microservice_ip"
     environment:
@@ -38,6 +39,7 @@ services:
   frontend:
     build:
       context: ./Frontend
+    image: zouhayrchak/frontend:latest
     networks:
       - mynet
     depends_on:
