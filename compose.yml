@@ -18,9 +18,8 @@ services:
   backend:
     build:
       context: ./Backend
-    image: zouhayrchak/backend:latest
     extra-hosts:
-      - "flask:microservice_ip"
+      - "flask:127.0.0.1"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/lab
       SPRING_DATASOURCE_USERNAME: admin
@@ -39,7 +38,6 @@ services:
   frontend:
     build:
       context: ./Frontend
-    image: zouhayrchak/frontend:latest
     networks:
       - mynet
     depends_on:
