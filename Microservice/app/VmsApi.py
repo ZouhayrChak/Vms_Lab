@@ -23,7 +23,7 @@ class Vm(Api):
 
             natBridge.createNatBridge(nb_data)
             try:
-                subprocess.check_call(f"docker run --name={vm_data['nameVm']} --net=sbr{vm_data['idSb']} --ip={vm_data['ipVm']} --rm --privileged -d ubuntu".split())                
+                subprocess.check_call(f"docker run --name={vm_data['nameVm']} --net=sbr{vm_data['idSb']} --ip={vm_data['ipVm']} --rm -itd ubuntu".split())                
                 subprocess.check_call(f"docker network connect nbr{vm_data['idSb']}{vm_data['idNb']} {vm_data['nameVm']}".split())
                 response = {"message":"vm created","success":True},201
             except Exception:
@@ -37,15 +37,40 @@ class Vm(Api):
         def deleteVm():
             try:
                 data = request.get_json()
+                print(data)
                 subprocess.check_call(f"docker stop {data['nameVm']}".split())
-                subprocess.check_call(f"docker network rm nbr{vm_data['idSb']}{data['idNb']}".split())
-
+                print("vm deleted")
+                subprocess.check_call(f"docker network rm nbr{data['idSb']}{data['idNb']}".split())
+                print("nb deleted")
 
                 response = {"message":"vm deleted","success":True},200
             except Exception:
                 print(f"vm {data['nameVm']} cannot be deleted")
-                response = {"message":"could not delete vm","success":False}
-            return response,404
+                response = {"message":"could not delete vm","success":False},404
+            return response
+        
+        @self.app.route(VM_URL + '/all', methods=["DELETE"])
+        def deleteAll():
+            try:
+                data = request.get_json()
+                print(data)
+
+                cmd_stop = f"docker stop $(docker ps -q -f network=sbr{data['idSb']})"
+                subprocess.check_call(cmd_stop, shell=True)
+
+                cmd_rm_nb = f"docker network rm $(docker network ls -f name=nbr{data['idSb']}* -q)"
+                subprocess.check_call(cmd_rm_nb, shell=True)
+
+
+                cmd_rm = f"docker network rm sbr{data['idSb']}"
+                subprocess.check_call(cmd_rm, shell=True)
+
+                return {"message": "vms deleted", "success": True}, 200
+
+            except Exception as e:
+                print(f"vms cannot be deleted: {e}")
+                return {"message": "could not delete vms", "success": False}, 404
+
 
 
 

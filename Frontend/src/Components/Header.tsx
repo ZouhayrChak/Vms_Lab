@@ -3,7 +3,11 @@ import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { pruneVm } from '../services/VmsApi';
 
-const Header:React.FC = () => {
+interface HeaderProps {
+    start: boolean
+}
+
+const Header:React.FC<HeaderProps> = ({start}) => {
     const [time,setTime] = useState({
         hour: 2,
         minute: 59,
@@ -66,7 +70,8 @@ const Header:React.FC = () => {
     return (
             <div id="header-out">
                 <div>{time.hour < 10 ? `0${time.hour}`: time.hour }:{time.minute < 10 ? `0${time.minute}` : time.minute}:{time.second < 10 ? `0${time.second}` : time.second }</div>
-                <button onClick={handleLogout}>Logout</button>
+                <div>{ start ? "You can start Now creating vms" : "Wait a moment" }</div>
+		<button onClick={handleLogout}>Logout</button>
             </div>
         )
 

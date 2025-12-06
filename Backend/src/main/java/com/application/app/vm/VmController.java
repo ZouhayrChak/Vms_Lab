@@ -42,6 +42,7 @@ public class VmController {
         }catch(VmNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponseDTO("vm not found",false));
         }catch(Exception e){
+		System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponseDTO("something went wrong",false));
         }
     }

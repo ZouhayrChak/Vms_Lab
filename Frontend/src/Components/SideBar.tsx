@@ -14,14 +14,7 @@ interface SideBarProps {
 
 
 const SideBar: React.FC<SideBarProps> = (props) => {
-    const [vms,setVms] = useState<DetailVm[]>([{
-    idVm: 1,
-    idSb: 1,
-    idNb: 1,
-    nameVm: "node1",
-    ipVm: "",
-    natIp: ""
-}]); 
+    const [vms,setVms] = useState<DetailVm[]>([]); 
 
 
     const createAVm = async () => {

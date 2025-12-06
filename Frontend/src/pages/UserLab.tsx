@@ -17,6 +17,7 @@ const UserLab: React.FC = () => {
         ipVm: '',
         natIp: ''
      });
+     const [start,setStart] = useState(localStorage.getItem("idSb")? true : false);
 
     
 
@@ -27,6 +28,7 @@ const UserLab: React.FC = () => {
                 try{
                     const response = await createSessionBridge();
                     localStorage.setItem("idSb",response.idSb.toString());
+                    setStart(true);
                 }catch(error:any){
                     toast.warning(error.message);
                 }
@@ -41,7 +43,7 @@ const UserLab: React.FC = () => {
     return (
         <div className="lab-container">
             <div id="header"> 
-                <Header/>
+                <Header start={start}/>
             </div>
             <div className="body-container">
                 <div id="side-bar">

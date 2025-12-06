@@ -2,6 +2,7 @@ package com.application.app.vm;
 
 
 import com.application.app.dto.users.ApiResponseDTO;
+import com.application.app.dto.users.SessionBridgeDTO;
 import com.application.app.dto.users.VmDetailsDTO;
 import com.application.app.exception.SessionBridgeNotFoundException;
 import com.application.app.exception.VmNotFoundException;
@@ -59,13 +60,13 @@ public class VmService {
         natBridgeService.createNatBridge(vm);
         vm.setSb(sb);
         vm.onCreate();
-        VmDetailsDTO vmDto = new VmDetailsDTO(vm.getId()+1,sb.getId(),vm.getNb().getId(), vm.getNameVm(), vm.getVmSIp(), vm.getNb().getNatIp());
+        vmRepository.save(vm);
+        VmDetailsDTO vmDto = new VmDetailsDTO(vm.getId(),sb.getId(),vm.getNb().getId(), vm.getNameVm(), vm.getVmSIp(), vm.getNb().getNatIp());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<VmDetailsDTO> httpEntity = new HttpEntity<>(vmDto,headers);
         ResponseEntity<ApiResponseDTO> response = restTemplate.postForEntity(flaskUrl + "/vm", httpEntity, ApiResponseDTO.class);
         if(response.getStatusCode().is2xxSuccessful()) {
-            vmRepository.save(vm);
             return vmDto;
         }
         System.out.println("after if is successful");
@@ -75,7 +76,7 @@ public class VmService {
 
     public void deleteVm(int idVm){
         VmEntity vm = vmRepository.findById(idVm).orElseThrow(() -> new VmNotFoundException("vm doesn't exist"));
-        if(!Objects.equals(vm.getSb().getUser().getId(), getCurrentUser().getId()))
+        if(vm.getSb().getUser().getId() != getCurrentUser().getId())
             throw new VmNotFoundException("vm doesn't exist or doesn't belong to user");
         VmDetailsDTO vmDto = new VmDetailsDTO(vm.getId(),vm.getSb().getId(),vm.getNb().getId(), vm.getNameVm(), vm.getVmSIp(), vm.getNb().getNatIp());
         HttpHeaders headers = new HttpHeaders();
@@ -84,12 +85,13 @@ public class VmService {
         ResponseEntity<ApiResponseDTO> response = restTemplate.exchange(flaskUrl + "/vm", HttpMethod.DELETE,httpEntity, ApiResponseDTO.class);
 
         if (response.getStatusCode().is2xxSuccessful()) {
-            vmRepository.deleteById(idVm);}
+            vmRepository.deleteById(idVm);	
+	}else{
         throw new VmNotFoundException("something is wrong");
+	}
 
     }
 
-    @Transactional
     public void prune() {
         User user = getCurrentUser();
         SessionBridgeEntity sb = user.getSb();
@@ -99,11 +101,14 @@ public class VmService {
 
         user.setSb(null);
         userRepository.save(user);
-        ResponseEntity<ApiResponseDTO> response = restTemplate.exchange(flaskUrl + "/vm/all/{idSb}", HttpMethod.DELETE,null, ApiResponseDTO.class,sb.getId());
-        if(response.getStatusCode().is2xxSuccessful())
-            sessionBridgeRepository.delete(sb);
+        SessionBridgeDTO sbDto = new SessionBridgeDTO(sb.getId(),sb.getBridgeIp());
+	    HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<SessionBridgeDTO> httpEntity = new HttpEntity<>(sbDto,headers);
+        ResponseEntity<ApiResponseDTO> response = restTemplate.exchange(flaskUrl + "/vm/all", HttpMethod.DELETE,httpEntity, ApiResponseDTO.class);
 
-        throw new SessionBridgeNotFoundException("not successful delete of vms");
+        if(response.getStatusCode().is2xxSuccessful()){sessionBridgeRepository.delete(sb);}
+        else{throw new SessionBridgeNotFoundException("not successful delete of vms");}
 
     }
 

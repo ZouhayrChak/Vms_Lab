@@ -52,14 +52,16 @@ public class SessionBridgeService {
             sb.setUser(user);
             user.setSb(sb);
             sb.generateValue();
-            SessionBridgeDTO sbDto = new SessionBridgeDTO(sb.getId()+1, sb.getBridgeIp());
+	    System.out.println(sb.getId());
+            sessionBridgeRepository.saveAndFlush(sb);
+	    System.out.println(sb.getId());
+            SessionBridgeDTO sbDto = new SessionBridgeDTO(sb.getId(), sb.getBridgeIp());
             System.out.println(sb.getId());
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<SessionBridgeDTO> httpEntity = new HttpEntity<>(sbDto,headers);
             ResponseEntity<ApiResponseDTO> response = restTemplate.postForEntity(flaskUrl + "/sb", httpEntity, ApiResponseDTO.class);
             if(response.getStatusCode().is2xxSuccessful()) {
-                sessionBridgeRepository.save(sb);
                 return sbDto;
             }
             throw new SessionBridgeAlreadyCreatedException("session bridge already created");

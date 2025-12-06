@@ -11,6 +11,6 @@ Backend/target/*
 Backend/.vscode/*
 Microservice/venv/
 webTerminal/venv/
-Microservice/app/__pycache__/
+Microservice/app/__pycache__/*
 
 
