@@ -19,7 +19,7 @@ services:
     build:
       context: ./Backend
     extra_hosts:
-      - "flask:127.0.0.1"
+      - "flask:172.20.24.184"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/lab
       SPRING_DATASOURCE_USERNAME: admin

@@ -8,7 +8,6 @@ import com.application.app.exception.SessionBridgeNotFoundException;
 import com.application.app.user.User;
 import com.application.app.user.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -45,7 +44,7 @@ public class SessionBridgeService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    public SessionBridgeDTO createSessionBridge() throws SessionBridgeAlreadyCreatedException {
+    public SessionBridgeDTO createSessionBridge() {
         User user = getCurrentUser();
         
         if (user.getSb() == null) {
@@ -53,7 +52,6 @@ public class SessionBridgeService {
             sb.setUser(user);
             user.setSb(sb);
             sb.generateValue();
-            System.out.println(sb.getId());
             SessionBridgeDTO sbDto = new SessionBridgeDTO(sb.getId()+1, sb.getBridgeIp());
             System.out.println(sb.getId());
             HttpHeaders headers = new HttpHeaders();
@@ -62,7 +60,6 @@ public class SessionBridgeService {
             ResponseEntity<ApiResponseDTO> response = restTemplate.postForEntity(flaskUrl + "/sb", httpEntity, ApiResponseDTO.class);
             if(response.getStatusCode().is2xxSuccessful()) {
                 sessionBridgeRepository.save(sb);
-                System.out.println(sb.getId());
                 return sbDto;
             }
             throw new SessionBridgeAlreadyCreatedException("session bridge already created");

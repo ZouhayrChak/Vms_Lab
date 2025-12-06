@@ -41,9 +41,9 @@ public class VmEntity {
         int v = COUNTER.getAndUpdate(i -> (i+1) % 256);
         this.ipBit = v;
         if(sb != null && nb != null) {
-            this.vmSIp = "172.19." + sb.getBridgeBit() + "." + ipBit;
-            this.vmNIp = "171.1." + nb.getNatBit() + "." + ipBit;
-            this.nameVm = "node" + vmSIp;
+            this.vmSIp = "170.19." + sb.getBridgeBit() + "." + ipBit;
+            this.vmNIp = "170.1." + nb.getNatBit() + "." + ipBit;
+            this.nameVm = "node" + this.vmSIp;
         }
     }
 }

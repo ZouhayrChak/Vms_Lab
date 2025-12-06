@@ -39,7 +39,7 @@ public class SessionBridgeEntity {
     public void generateValue(){
         var v = COUNTER.getAndUpdate(i -> (i+1) % 256);
         this.bridgeBit = v;
-        this.bridgeIp = "172.19." + this.bridgeBit + ".1";
+        this.bridgeIp = "170.19." + this.bridgeBit + ".1";
     }
 
     public String toString(){

@@ -17,6 +17,7 @@ class Vm(Api):
         @self.app.route(VM_URL+"/",methods=["POST"])
         def createVm():
             vm_data = request.get_json()
+            print(vm_data)
             natBridge = NatBridge()
             nb_data =dict(idNb=vm_data['idNb'],natIp=vm_data['natIp'],idSb=vm_data['idSb'])
 

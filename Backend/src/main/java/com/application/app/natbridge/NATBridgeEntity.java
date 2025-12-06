@@ -31,7 +31,7 @@ public class NATBridgeEntity {
     public void generateValue(){
         var v = COUNTER.getAndUpdate(i -> (i+1) % 256);
         this.natBit = v;
-        this.natIp = "171.1." + this.natBit + ".1";
+        this.natIp = "170.1." + this.natBit + ".1";
     }
 
 

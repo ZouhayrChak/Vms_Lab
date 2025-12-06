@@ -9,7 +9,8 @@ Backend/.dist/*
 Backend/.idea/*
 Backend/target/*
 Backend/.vscode/*
-
+Microservice/venv/
+webTerminal/venv/
 
 
 

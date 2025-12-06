@@ -59,7 +59,7 @@ public class VmService {
         natBridgeService.createNatBridge(vm);
         vm.setSb(sb);
         vm.onCreate();
-        VmDetailsDTO vmDto = new VmDetailsDTO(vm.getId(),vm.getSb().getId(),vm.getNb().getId(), vm.getNameVm(), vm.getVmSIp(), vm.getNb().getNatIp());
+        VmDetailsDTO vmDto = new VmDetailsDTO(vm.getId()+1,sb.getId(),vm.getNb().getId(), vm.getNameVm(), vm.getVmSIp(), vm.getNb().getNatIp());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<VmDetailsDTO> httpEntity = new HttpEntity<>(vmDto,headers);

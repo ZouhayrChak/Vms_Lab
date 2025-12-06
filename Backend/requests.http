@@ -27,8 +27,7 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9VU0VSIn1dLCJzdWIiOiJab3VoYXlyY2hha3JvdW5AZ21haWwuY29tIiwiaWF0IjoxNzYzNzU2OTg3LCJleHAiOjIxMjM3NTY5ODd9.glWui_Bg4IYf7E3sF1xok3lPPn7J_xMjPrD07oBZ2Dg
 
 {
-  "idSb" : 1,
-  "bridgeIp": "172.19.1.1"
+  "idSb" : 0,"bridgeIp": "172.19.0.1"
 }
 
 ### Delete vm
