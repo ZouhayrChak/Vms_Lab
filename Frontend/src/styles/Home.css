@@ -1,11 +1,12 @@
 #home-container{    
-    background-color: rgb(84, 126, 143);
+    background-color: #34435c;
     height: 80%;
     width: 40%;
     display: flex;    
     align-items: center;
     border-radius: 10%;
     box-shadow: 1px 1px 1px 1px;
+    padding: 0 10px 0 10px;
     
 }
 
@@ -22,18 +23,14 @@
     color: rgb(227, 235, 235);
 
 }
-input::placeholder{
-    color: white;
-    font-size: 15px;
-    font-weight: bold;
-}
 
 
 #home-container button{
     font-size: large;
-    background-color:rgba(124, 1, 1, 0.322);
+    background-color:#607396;
     border-radius: 5px;
     cursor: pointer;
+    border: none;
     width: 50%;
     margin-left: 25%;
     margin-top: 10%;
@@ -44,7 +41,9 @@ input::placeholder{
 }
 
 #home-container button:hover{
-    background-color: rgb(3, 88, 109);
+    background-color: rgb(185, 188, 189);
+    color: rgb(45, 45, 122);
+    transform: translateX(-5px) translateY(-5px);
 }
 
 #home-container h1{
@@ -52,6 +51,9 @@ input::placeholder{
     top: 20%;
     left: 47%;
     color: rgb(227, 235, 235);
+    font-size: 30px;
+    font-weight: 400;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
 
 } 
 
@@ -60,8 +62,14 @@ input::placeholder{
     height: 100%;
     border-radius: 7px;
     padding: 5px;
-    background-color: rgba(245, 244, 244, 0.185);
+    background-color: #30405c;
     font-family: Arial, Helvetica, sans-serif;
+
+}
+.form-item::placeholder{
+    color:aliceblue;
+    font-size: 15px;
+    
 }
 form{
     width: 100%;
@@ -76,6 +84,6 @@ form{
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(198, 229, 241);
+    background-color: #8e99ac;
 
 }

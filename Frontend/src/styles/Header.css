@@ -1,5 +1,9 @@
 #header-out{
     height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    color: aliceblue;
     
 }
 
@@ -7,13 +11,17 @@
     float: right;
     height: 30%;
     width: 150px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 15px;
     border: none;
     border-radius: 5px;
-    background-color: rgba(182, 115, 115, 0.185);
+    background-color: #243b5e;
     cursor: pointer;
     margin: 5px 5px 5px 5px;
-    box-shadow: 1px 1px 1px 1px;
+    box-shadow: 0 0 1px 2px;
+    color:aliceblue;
+}
+
+#header-out button:hover{
+    background-color: #1a2942;
+    
 }
 

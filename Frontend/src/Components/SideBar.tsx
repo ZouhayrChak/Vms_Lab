@@ -14,7 +14,22 @@ interface SideBarProps {
 
 
 const SideBar: React.FC<SideBarProps> = (props) => {
-    const [vms,setVms] = useState<DetailVm[]>([]); 
+    const [vms,setVms] = useState<DetailVm[]>([{
+    idVm: 0,
+    idSb: 0,
+    idNb: 0,
+    nameVm: "*",
+    ipVm: "*",
+    natIp: "*"
+},
+{
+    idVm: 1,
+    idSb: 0,
+    idNb: 0,
+    nameVm: "*",
+    ipVm: "*",
+    natIp: "*"
+}]); 
 
 
     const createAVm = async () => {
@@ -90,7 +105,7 @@ const SideBar: React.FC<SideBarProps> = (props) => {
                                     <br/>
                                 {vm.ipVm}    
                             </button>
-                            <button onClick={()=> handleDeleteVm(vm.idVm)}id="trush">🗑️</button>
+                            <button onClick={()=> handleDeleteVm(vm.idVm)}id="trush"><img src="/delete_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg" alt="" /></button>
                         </div>
                         
                     </div>)

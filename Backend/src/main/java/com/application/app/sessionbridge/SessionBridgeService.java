@@ -46,8 +46,8 @@ public class SessionBridgeService {
 
     public SessionBridgeDTO createSessionBridge() {
         User user = getCurrentUser();
-        
-        if (user.getSb() == null) {
+	SessionBridge sb = user.getSb();        
+        if (sb == null) {
             SessionBridgeEntity sb = new SessionBridgeEntity();
             sb.setUser(user);
             user.setSb(sb);
@@ -67,7 +67,8 @@ public class SessionBridgeService {
             throw new SessionBridgeAlreadyCreatedException("session bridge already created");
 
         } else {
-            throw new SessionBridgeAlreadyCreatedException("Session bridge already created");
+		SessionBridgeDTO sbDto = new SessionBridgeDTO(sb.getId(), sb.getBridgeIp());
+		return sbDto;
         }
     }
 

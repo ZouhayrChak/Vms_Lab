@@ -27,7 +27,8 @@ const UserLab: React.FC = () => {
         const getSessionBridge = async () =>{
                 try{
                     const response = await createSessionBridge();
-                    localStorage.setItem("idSb",response.idSb.toString());
+                    if (!localStorage.getItem("idSb"))
+                        localStorage.setItem("idSb",response.idSb.toString());
                     setStart(true);
                 }catch(error:any){
                     toast.warning(error.message);
@@ -35,7 +36,6 @@ const UserLab: React.FC = () => {
         
     }
     
-        if (!localStorage.getItem("idSb"))
                 getSessionBridge();
 
     },[])
