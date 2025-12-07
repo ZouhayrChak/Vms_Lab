@@ -26,5 +26,5 @@ COPY . .
 
 EXPOSE 8000
 
-CMD ["python", "app.py"]
+CMD ["python", "entryPoint.py"]
 

@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
 
-  webTerminal:
+  webterminal:
     build:
       context: ./webTerminal
     networks:
@@ -13,7 +13,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
-  Microservice:
+  microservice:
     build:
         context: ./Microservice
     networks:
@@ -44,12 +44,12 @@ services:
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
       SPRING_JPA_HIBERNATE_DDL_AUTO: create-drop
       SPRING_JPA_SHOW_SQL: "true"
-      FLASK_URL: "http://Microservice:8000/api"
+      FLASK_URL: "http://microservice:8000/api"
     networks:
       - mynet
     depends_on:
       - postgres
-      - Microservice
+      - microservice
 
     ports:
       - "8080:8080"
@@ -61,7 +61,7 @@ services:
       - mynet
     depends_on:
       - backend
-      - webTerminal
+      - webterminal
     ports:
       - "80:80"
     volumes:

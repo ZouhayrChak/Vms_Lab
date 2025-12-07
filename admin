@@ -1,0 +1,4 @@
+#! /bin/bash
+
+echo "$1123"
+curl -X POST http://127.0.0.1:8080/api/auth/user -H "Content-Type: application/json" -d '{"email":"$1","password":"$1123"}'
