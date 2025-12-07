@@ -2,6 +2,25 @@ version: "3.8"
 
 services:
 
+  webTerminal:
+    build:
+      context: ./webTerminal
+    networks:
+      - mynet
+    ports:
+      - "5000:5000"
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  Microservice:
+    build:
+        context: ./Microservice
+    networks:
+      - mynet
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
   postgres:
     image: postgres:17
     environment:
@@ -18,8 +37,6 @@ services:
   backend:
     build:
       context: ./Backend
-    extra_hosts:
-      - "flask:172.20.24.184"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/lab
       SPRING_DATASOURCE_USERNAME: admin
@@ -27,11 +44,13 @@ services:
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
       SPRING_JPA_HIBERNATE_DDL_AUTO: create-drop
       SPRING_JPA_SHOW_SQL: "true"
-      FLASK_URL: "http://flask:8000/api"
+      FLASK_URL: "http://Microservice:8000/api"
     networks:
       - mynet
     depends_on:
       - postgres
+      - Microservice
+
     ports:
       - "8080:8080"
 
@@ -42,10 +61,13 @@ services:
       - mynet
     depends_on:
       - backend
+      - webTerminal
     ports:
       - "80:80"
     volumes:
       - ./Frontend/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+
+  
 
 
 networks:
