@@ -66,6 +66,10 @@ class Vm(Api):
                 subprocess.check_call(cmd_rm, shell=True)
 
                 return {"message": "vms deleted", "success": True}, 200
+            
+            except CalledProcessError as e:
+                return {"message": "no vms", "success": True}, 200
+
 
             except Exception as e:
                 print(f"vms cannot be deleted: {e}")

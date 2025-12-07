@@ -36,7 +36,7 @@ const SideBar: React.FC<SideBarProps> = (props) => {
                     await deleteVm({ idVm: idVm});
                     const newList = vms.filter(vm => vm.idVm !== idVm);
                     setVms(newList);
-                    // set selected to first or undefined if none
+                    
                     if (newList.length >= 1 ){
                         props.setSelectedVm(newList[0]);
                     }
