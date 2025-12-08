@@ -15,8 +15,6 @@ export default function XTerminal({ socket }: XTerminalProps) {
   useEffect(() => {
     term.current = new Terminal({
       cursorBlink: true,
-      fontSize: 14,
-      fontFamily: "Arial",
       theme: { background: "#1e1e1e" },
     });
 
