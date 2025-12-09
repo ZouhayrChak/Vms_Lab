@@ -9,8 +9,6 @@ import lombok.Data;
 public class VmDetailsDTO {
     private int idVm;
     private int idSb;
-    private int idNb;
     private String nameVm;
     private String ipVm;
-    private String natIp;
 }

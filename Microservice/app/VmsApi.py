@@ -18,17 +18,11 @@ class Vm(Api):
         def createVm():
             vm_data = request.get_json()
             print(vm_data)
-            natBridge = NatBridge()
-            nb_data =dict(idNb=vm_data['idNb'],natIp=vm_data['natIp'],idSb=vm_data['idSb'])
-
-            natBridge.createNatBridge(nb_data)
             try:
                 subprocess.check_call(f"docker run --name={vm_data['nameVm']} --net=sbr{vm_data['idSb']} --ip={vm_data['ipVm']} --rm -itd ubuntu".split())                
-                subprocess.check_call(f"docker network connect nbr{vm_data['idSb']}{vm_data['idNb']} {vm_data['nameVm']}".split())
+
                 response = {"message":"vm created","success":True},201
             except Exception:
-                subprocess.check_call(f"docker network rm nbr{vm_data['idSb']}{vm_data['idNb']}".
-                split())
                 subprocess.check_call(f"docker rm -f {vm_data['nameVm']}".split())
                 response = {"message":"could not create vm","success":False},404
             return response
@@ -40,8 +34,6 @@ class Vm(Api):
                 print(data)
                 subprocess.check_call(f"docker stop {data['nameVm']}".split())
                 print("vm deleted")
-                subprocess.check_call(f"docker network rm nbr{data['idSb']}{data['idNb']}".split())
-                print("nb deleted")
 
                 response = {"message":"vm deleted","success":True},200
             except Exception:
@@ -58,8 +50,6 @@ class Vm(Api):
                 cmd_stop = f"docker stop $(docker ps -q -f network=sbr{data['idSb']})"
                 subprocess.check_call(cmd_stop, shell=True)
 
-                cmd_rm_nb = f"docker network rm $(docker network ls -f name=nbr{data['idSb']}* -q)"
-                subprocess.check_call(cmd_rm_nb, shell=True)
 
 
                 cmd_rm = f"docker network rm sbr{data['idSb']}"

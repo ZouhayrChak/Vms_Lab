@@ -24,6 +24,7 @@ const SideBar: React.FC<SideBarProps> = (props) => {
                 const response = await createVm({idSb: Number(sb) , bridgeIp: ''});
                 setVms(prev => [...prev, response]);
                 props.setSelectedVm(response);
+                
             }
             
         }catch(error:any){
@@ -44,10 +45,8 @@ const SideBar: React.FC<SideBarProps> = (props) => {
                     props.setSelectedVm({
                             idVm : 0,
                             idSb: 0,
-                            idNb: 0,
                             nameVm: '',
                             ipVm: '',
-                            natIp: ''
                          })
                         }
                     

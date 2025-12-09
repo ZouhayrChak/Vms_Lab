@@ -6,7 +6,6 @@ import com.application.app.dto.users.SessionBridgeDTO;
 import com.application.app.dto.users.VmDetailsDTO;
 import com.application.app.exception.SessionBridgeNotFoundException;
 import com.application.app.exception.VmNotFoundException;
-import com.application.app.natbridge.NATBridgeService;
 import com.application.app.sessionbridge.SessionBridgeEntity;
 import com.application.app.sessionbridge.SessionBridgeRepository;
 import com.application.app.user.User;
@@ -28,15 +27,13 @@ import java.util.Objects;
 public class VmService {
     private final VmRepository vmRepository;
     private final SessionBridgeRepository sessionBridgeRepository;
-    private final NATBridgeService natBridgeService;
     private final UserRepository userRepository;
     private final RestTemplate restTemplate;
     private final String flaskUrl;
 
-    public VmService(VmRepository vmRepository, SessionBridgeRepository sessionBridgeRepository, NATBridgeService natBridgeService, UserRepository userRepository, RestTemplate restTemplate, @Value("${flask.url}") String flaskUrl){
+    public VmService(VmRepository vmRepository, SessionBridgeRepository sessionBridgeRepository, UserRepository userRepository, RestTemplate restTemplate, @Value("${flask.url}") String flaskUrl){
         this.vmRepository = vmRepository;
         this.sessionBridgeRepository = sessionBridgeRepository;
-        this.natBridgeService = natBridgeService;
         this.userRepository = userRepository;
         this.restTemplate = restTemplate;
         this.flaskUrl = flaskUrl;
@@ -57,11 +54,10 @@ public class VmService {
     public VmDetailsDTO createVm(int idSb){
         SessionBridgeEntity sb = sessionBridgeRepository.findById(idSb).orElseThrow(() -> new SessionBridgeNotFoundException("session bridge not found"));
         VmEntity vm = new VmEntity();
-        natBridgeService.createNatBridge(vm);
         vm.setSb(sb);
         vm.onCreate();
         vmRepository.save(vm);
-        VmDetailsDTO vmDto = new VmDetailsDTO(vm.getId(),sb.getId(),vm.getNb().getId(), vm.getNameVm(), vm.getVmSIp(), vm.getNb().getNatIp());
+        VmDetailsDTO vmDto = new VmDetailsDTO(vm.getId(),sb.getId(), vm.getNameVm(), vm.getVmSIp());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<VmDetailsDTO> httpEntity = new HttpEntity<>(vmDto,headers);
@@ -78,7 +74,7 @@ public class VmService {
         VmEntity vm = vmRepository.findById(idVm).orElseThrow(() -> new VmNotFoundException("vm doesn't exist"));
         if(vm.getSb().getUser().getId() != getCurrentUser().getId())
             throw new VmNotFoundException("vm doesn't exist or doesn't belong to user");
-        VmDetailsDTO vmDto = new VmDetailsDTO(vm.getId(),vm.getSb().getId(),vm.getNb().getId(), vm.getNameVm(), vm.getVmSIp(), vm.getNb().getNatIp());
+        VmDetailsDTO vmDto = new VmDetailsDTO(vm.getId(),vm.getSb().getId(), vm.getNameVm(), vm.getVmSIp());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<VmDetailsDTO> httpEntity = new HttpEntity<>(vmDto,headers);
@@ -124,10 +120,8 @@ public class VmService {
                 .map(vm -> new VmDetailsDTO(
                         vm.getId(),
                         vm.getSb().getId(),
-                        vm.getNb().getId(),
                         vm.getNameVm(),
-                        vm.getVmSIp(),
-                        vm.getNb().getNatIp()
+                        vm.getVmSIp()
                 ))
                 .toList();
 

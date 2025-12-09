@@ -1,6 +1,5 @@
 package com.application.app.vm;
 
-import com.application.app.natbridge.NATBridgeEntity;
 import com.application.app.sessionbridge.SessionBridgeEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -27,12 +26,9 @@ public class VmEntity {
     @JoinColumn(name = "session_bridge_id")
     private SessionBridgeEntity sb;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private NATBridgeEntity nb;
 
 
     private String vmSIp;
-    private String vmNIp;
 
     private String nameVm;
 
@@ -40,9 +36,8 @@ public class VmEntity {
     public void onCreate(){
         int v = COUNTER.getAndUpdate(i -> (i+1) % 256);
         this.ipBit = v;
-        if(sb != null && nb != null) {
+        if(sb != null) {
             this.vmSIp = "170.19." + sb.getBridgeBit() + "." + ipBit;
-            this.vmNIp = "170.1." + nb.getNatBit() + "." + ipBit;
             this.nameVm = "node" + this.vmSIp;
         }
     }

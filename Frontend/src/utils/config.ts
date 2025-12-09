@@ -1,10 +1,8 @@
 export type DetailVm = {
     idVm: number,
     idSb: number,
-    idNb: number,
     nameVm: string,
     ipVm: string,
-    natIp: String
 }
 
 export type VmStats = {

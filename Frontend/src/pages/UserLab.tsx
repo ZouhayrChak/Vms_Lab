@@ -12,10 +12,8 @@ const UserLab: React.FC = () => {
     const [selectedVm,setSelectedVm] = useState<DetailVm >({
         idVm : 0,
         idSb: 0,
-        idNb: 0,
         nameVm: '',
         ipVm: '',
-        natIp: ''
      });
      const [start,setStart] = useState(localStorage.getItem("idSb")? true : false);
 
