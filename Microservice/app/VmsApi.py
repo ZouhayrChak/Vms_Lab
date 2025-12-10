@@ -1,7 +1,6 @@
 from .Api import Api
 from .Config import BASE_URL
 from flask import request
-from .NatBridge import NatBridge
 import subprocess
 from subprocess import CalledProcessError
 
