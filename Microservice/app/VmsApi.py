@@ -23,7 +23,7 @@ class Vm(Api):
 
             natBridge.createNatBridge(nb_data)
             try:
-                subprocess.check_call(f"docker run --name={vm_data['nameVm']} --net=sbr{vm_data['idSb']} --ip={vm_data['ipVm']} --rm -itd ubuntu".split())                
+                subprocess.check_call(f"docker run --name={vm_data['nameVm']} --net=sbr{vm_data['idSb']} --privileged --ip={vm_data['ipVm']} --rm -d docker:dind".split())                
                 subprocess.check_call(f"docker network connect nbr{vm_data['idSb']}{vm_data['idNb']} {vm_data['nameVm']}".split())
                 response = {"message":"vm created","success":True},201
             except Exception:

@@ -19,7 +19,7 @@ def term(ws):
         return
 
     # Command for non-login interactive shell
-    cmd = ["docker", "exec", "-it", container_id, "/bin/bash"]
+    cmd = ["docker", "exec", "-it", container_id, "/bin/sh"]
 
     pid, fd = pty.fork()
 
